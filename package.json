@@ -5,6 +5,7 @@
   "typings": "dist/index.d.ts",
   "files": [
     "dist",
+    "src",
     "README.md",
     "LICENSE.md"
   ],
@@ -20,19 +21,24 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node index.ts",
     "build": "rm -rf dist && node esbuild.js && tsc"
   },
-  "author": "Italo Sousa",
+  "author": {
+    "name": "Italo Sousa",
+    "url": "https://github.com/ItaloSa"
+  },
+  "homepage": "https://github.com/ItaloSa/nock-mock-server",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ItaloSa/nock-mock-server"
+  },
   "license": "MIT",
   "description": "A simple mock server powered by nock",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.21.1",
     "express-http-proxy": "^2.1.1",
-    "nock": "^13.5.6",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.6.3"
+    "nock": "^13.5.6"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
