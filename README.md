@@ -42,4 +42,4 @@ Contributions are welcome! Please see the [contributing guidelines](CONTRIBUTING
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/italosa/nock-mock-server/blob/main/LICENSE.md) file for details.
