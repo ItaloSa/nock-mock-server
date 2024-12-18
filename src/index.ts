@@ -4,7 +4,6 @@ import proxy from "express-http-proxy";
 import cors from "cors";
 
 const MOCK_HOST = "http://localhost";
-const MOCK_PORT = 3000;
 
 export class NockServer {
   app: express.Application;
@@ -33,8 +32,8 @@ export class NockServer {
           const activeMocks = this.nockInstance
             .activeMocks()
             .map((mock) => mock.slice(mock.indexOf(":80") + 3));
-          
-            const url = req.originalUrl.split("?")[0];
+
+          const url = req.originalUrl.split("?")[0];
 
           return activeMocks.includes(url);
         },
@@ -42,11 +41,11 @@ export class NockServer {
     );
   }
 
-  public start(callback: (port: number) => void) {
+  public start(port: number, callback: () => void) {
     this.nockInstance.persist();
 
-    this.app.listen(MOCK_PORT, () => {
-      callback(MOCK_PORT);
+    this.app.listen(port, () => {
+      callback();
     });
   }
 
