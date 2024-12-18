@@ -1,4 +1,4 @@
-# Nock Server
+# Nock Mock Server
 
 [![npm](https://img.shields.io/npm/v/nock-mock-server.svg)](https://www.npmjs.com/package/nock-mock-server)
 [![License](https://img.shields.io/github/license/italosa/nock-mock-server.svg)](https://github.com/italosa/nock-mock-server/blob/main/LICENSE.md)
