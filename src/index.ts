@@ -5,7 +5,7 @@ import cors from "cors";
 
 const MOCK_HOST = "http://localhost";
 
-export class NockServer {
+export class NockMockServer {
   app: express.Application;
   nockInstance: nock.Scope;
 
@@ -34,6 +34,8 @@ export class NockServer {
             .map((mock) => mock.slice(mock.indexOf(":80") + 3));
 
           const url = req.originalUrl.split("?")[0];
+
+          console.log(`[${req.method.toUpperCase()}] ${url}`);
 
           return activeMocks.includes(url);
         },
