@@ -8,6 +8,7 @@ const MOCK_HOST = "http://localhost";
 export class NockMockServer {
   app: express.Application;
   nockInstance: nock.Scope;
+  hasBypass: boolean = false;
 
   constructor() {
     this.app = express();
@@ -18,27 +19,74 @@ export class NockMockServer {
   private setupExpressApp() {
     this.app.use(express.json());
     this.app.use(cors());
+    this.setupRequestLogger();
     this.setupDefaultProxy();
+  }
+
+  private setupRequestLogger() {
+    this.app.use((req, res, next) => {
+      if (this.hasMock(req)) {
+        console.log(`[${req.method.toUpperCase()}] ${req.url}`);
+      } else if (this.hasBypass) {
+        console.log(`Bypass: [${req.method.toUpperCase()}] ${req.url}`);
+      } else {
+        console.log(`Not Handled: [${req.method.toUpperCase()}] ${req.url}`);
+      }
+      next();
+    });
+  }
+
+  private hasMock(req: express.Request) {
+    const activeMocks = this.nockInstance
+      .activeMocks()
+      .map((mock) => mock.slice(mock.indexOf(":80") + 3));
+
+    const url = req.originalUrl.split("?")[0];
+
+    return activeMocks.includes(url);
   }
 
   private setupDefaultProxy() {
     this.app.use(
       "*",
       proxy(MOCK_HOST, {
-        proxyReqPathResolver: (req) => {
-          return req.originalUrl;
+        proxyReqPathResolver: (req) => req.originalUrl,
+        filter: (req) => this.hasMock(req),
+      })
+    );
+  }
+
+  /**
+   * @description EXPERIMENTAL - use with caution!
+   * This uses express-http-proxy to proxy the request
+   * to the provided URL.
+   * @param path - The path to be bypassed ("*" allows bypassing all paths to the provided URL).
+   * @param bypassUrl - The URL to which the requests will be sent.
+   * @param proxyOptions - Options for express-http-proxy.
+   * 
+   * @see {@link https://github.com/villadora/express-http-proxy}
+   */
+  public setBypass(
+    path: string,
+    bypassUrl: string,
+    proxyOptions: proxy.ProxyOptions
+  ) {
+    this.hasBypass = true;
+    this.app.use(
+      path,
+      proxy(bypassUrl, {
+        https: bypassUrl.includes("https"),
+        proxyReqPathResolver: (req) => req.originalUrl,
+        proxyReqBodyDecorator: (proxyReqOpts) => {
+          (proxyReqOpts as any).rejectUnauthorized = false;
+          return proxyReqOpts;
         },
-        filter: (req) => {
-          const activeMocks = this.nockInstance
-            .activeMocks()
-            .map((mock) => mock.slice(mock.indexOf(":80") + 3));
-
-          const url = req.originalUrl.split("?")[0];
-
-          console.log(`[${req.method.toUpperCase()}] ${url}`);
-
-          return activeMocks.includes(url);
+        proxyErrorHandler: (err, res, next) => {
+          console.error(err);
+          next(err);
         },
+
+        ...proxyOptions,
       })
     );
   }
