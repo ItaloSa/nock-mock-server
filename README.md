@@ -24,11 +24,11 @@ const { NockServer } = require("nock-mock-server");
 const nockServer = new NockSesrver();
 
 nockServer.addMock((nock) => {
-    nock.get("/").reply(200, "Hello World");
+  nock.get("/").reply(200, "Hello World");
 });
 
 nockServer.start(3000, () => {
-    console.log("Nock server started on port 3000");
+  console.log("Nock server started on port 3000");
 });
 ```
 

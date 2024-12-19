@@ -1,0 +1,16 @@
+{
+  "name": "nock-mock-server-examples",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "js": "node ./javascript/index.js"
+  },
+  "keywords": [],
+  "author": "Italo Sousa",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "nock-mock-server": "file:.."
+  }
+}
