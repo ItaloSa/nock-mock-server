@@ -32,11 +32,11 @@ nockServer.start(3000, () => {
 });
 ```
 
-<!-- ## Examples
+## Examples
 
-You can find more examples in the [examples](examples) directory.
+You can find more examples in the [examples](./examples/) directory.
 
-## Contributing
+<!-- ## Contributing
 
 Contributions are welcome! Please see the [contributing guidelines](CONTRIBUTING.md) for more information. -->
 
