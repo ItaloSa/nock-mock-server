@@ -19,16 +19,17 @@ Create a mock server instance and add mocks:
 
 ```js
 // index.js
-const { NockServer } = require("nock-mock-server");
+const { NockMockServer } = require("nock-mock-server");
 
-const nockServer = new NockSesrver();
+const PORT = 3000;
+const nockServer = new NockMockServer();
 
-nockServer.addMock((nock) => {
-  nock.get("/").reply(200, "Hello World");
+nockServer.addMock((nockInstance) => {
+  nockInstance.get("/").reply(200, { message: "Hello World" });
 });
 
-nockServer.start(3000, () => {
-  console.log("Nock server started on port 3000");
+nockServer.start(PORT, () => {
+  console.log("Nock server started");
 });
 ```
 
